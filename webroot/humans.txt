@@ -1,0 +1,1 @@
+Simox is a PHP-boilerplate/framework for small websites.
