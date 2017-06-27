@@ -4,6 +4,7 @@
 body {
   color: #333;
   font-family: arial, sans-serif;
+  background-color: black;
 }
  
 /**
@@ -11,8 +12,8 @@ body {
  */
 #wrapper {
   margin: 0 auto;
-  width: 980px; 
-  padding: 10px;
+  width: 980px;
+  padding: 0px;
 }
  
  
@@ -20,41 +21,133 @@ body {
  * Layout for header
  */
 #header {
-  position: relative;
-  margin-bottom: 40px;
+  padding:20px;
+  background-color:#E5E5E5;
 }
- 
-.sitetitle {
-  position: absolute;
-  top: 6px;
-  left: 130px;
-  font-size: 48px;
-}
- 
-.siteslogan {
-  position: absolute;
-  top: 65px;
-  left: 130px;
-  font-style: italic;
-  color: #666;
-}
+
+.navbar {display:block;font-family:Arial;font-size:14px;font-weight:bold;}
+.navbar a {color:black;text-decoration:none;padding:20px;}
+.navbar a:hover {background-color:#949494;padding:20px;}
+.navbar a.selected {background-color:#949494;padding:20px;}
  
  
 /**
  * Layout for main
  */
 #main {
-  min-height: 20em;
+	min-height:100px;
 }
- 
+
+a {color:black;padding:3px;text-decoration:none;}
+a:hover {background-color:#949494;padding:3px;}
+a.selected {background-color:#949494;padding:3px;}
+
+.imglinks {margin:0px;padding:0px;}
+.imglinks a:hover {background:transparent;background-color:transparent;padding:0px;}
+
+#main h1 {
+	font-size:18px;
+	text-transform:uppercase;
+	font-weight:bold;
+	clear:both;
+}
+
+#main h2 {
+	font-size:16px;
+	text-transform:uppercase;
+	font-weight:bold;
+	clear:both;
+}
+
+#main h3 {
+	font-size:14px;
+	font-weight:bold;
+	clear:both;
+}
+
+#ContentWrapper {
+	background-color:white;
+	overflow:hidden;
+	padding:20px;
+}
+
+#content-info {
+	width:70%;
+	float:left;
+	margin-bottom:15px;
+}
+
+#content-info-starbox {
+	background-image:url('../img.php?src=star.png&width=66');
+	background-repeat:no-repeat;
+	background-position:center; 
+	width:66px;
+	height:66px;
+	line-height:66px;
+	text-align:center;
+	vertical-align:middle;
+	font-size:15px;
+	font-weight:bold;
+	float:left;
+}
+
+#content-info-rentbox {
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	width:80px;
+	margin:10px;
+	margin-left:85px;
+	padding:10px;
+	float:left;
+	background-color:red;
+	color:white;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+}
+
+#content-info img {
+	margin-right:1px;
+	margin-bottom:1px;
+	float:left;
+}
+
+#content-aside {
+	width:30%;
+	float:left;
+}
+
+#content-trailer {
+	width:585px;
+	float:left;
+	margin-bottom:15px;
+}
+
+#content-relatedmovies {
+	width:100%;
+	float:left;
+}
+
+#content-relatedmovies img {
+	margin-right:6px;
+}
+
+/*
+ * Input styles
+ */
+.label-checkbox{display: inline-block;border:1px grey;padding:10px;margin-top:10px;width:180px;background:#E5E5E5;}
+.label-checkbox:hover{background-color:#949494;}
+input[type=checkbox]:checked + .label-checkbox{font-weight:bold;}
  
 /**
  * Layout for footer
  */
 #footer {
-  margin-top: 40px;
-  border-top: 1px solid #ccc;
-  padding-top: 15px;
+  clear:both;
+  padding: 40px;
+  background-color:#CCCCCC;
+  font-size:14px;
 }
  
 .sitefooter {

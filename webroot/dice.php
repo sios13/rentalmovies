@@ -1,48 +1,72 @@
-<?php 
+<?php
 /**
  * This is a Simox pagecontroller.
  *
  */
 // Include the essential config-file which also creates the $simox variable with its defaults.
-include(__DIR__.'/config.php'); 
+include(__DIR__.'/config.php');
 
+$action = isset($_GET['action']) ? $_GET['action'] : null;
+$diceGame = isset($_SESSION['dicegame']) ? $_SESSION['dicegame'] : new CDiceGame();
 
+$output = "
+<p>Besegra motståndaren i tärningsspelet 100 och vinn filmer!</p>
+<p>Först till 100 vinner.</p>
+<a href='?action=start'>Starta spelet</a>
+";
 
-// Demonstration of module CDice
-$dice = new CDice();
-
-$roll = isset($_GET['roll']) && is_numeric($_GET['roll']) ? $_GET['roll'] : 0;
-
-if($roll > 100) {
-  throw new Exception("To many rolls on the dice. Not allowed.");
+if ($action == "quit") {
+	$diceGame = null;
 }
 
-$html = null;
-if($roll) {
-  $dice->Roll($roll);
-
-  $html = "<p>Du gjorde {$roll} kast och fick följande resultat.</p>\n<ul>";
-  foreach($dice->GetResults() as $val) {
-    $html .= "\n<li>{$val}</li>";
-  }
-  $html .= "\n</ul>\n";
-
-  $html .= "<p>Totalt fick du " . $dice->GetTotal() . " poäng på dina kast.</p>";
+if ($diceGame && $user->IsAuthenticated()) {
+	if ($action == "roll") {
+		$diceGame->roll();
+	}
+	if ($action == "roundcomplete") {
+		$diceGame->newRound();
+	}
+	if ($action == "start") {
+		$diceGame = new CDiceGame();
+	}
+	$output = $diceGame->getOutput();
+	if ($diceGame->player1Winner()) {
+	
+		$res = $db->ExecuteSelectQueryAndFetchAll("SELECT * FROM kmom07_Movies ORDER BY RAND() LIMIT 1;");
+		$movie = $res[0]->title;
+		$res = $db->ExecuteSelectQueryAndFetchAll("SELECT * FROM kmom07_Users WHERE name = ?;", array($user->getName()));
+		$userMovies = $res[0]->movies;
+		$userMovies .= "." . $movie;
+		$db->ExecuteQuery("UPDATE kmom07_Users SET movies = ? WHERE name = ?;", array($userMovies, $user->getName()));
+		
+		$output = "<p>Du vann!</p>";
+		$output .= "<p>Du har vunnit filmen {$movie}!</p>";
+		$output .= "<p><a href='?action=start'>Spela igen!</a></p>";
+		$output .= "<p><a href='?action=quit'>Avsluta spelet</a></p>";
+		
+		$diceGame = null;
+	}
 }
 
+if (!$user->IsAuthenticated()) {
+	$output = "<p>Du måste vara inloggad för att tävla.</p><p><a href='user_login.php'>Logga in</a></p>";
+}
 
+$_SESSION['dicegame'] = $diceGame;
 
 // Do it and store it all in variables in the Simox container.
-$simox['title'] = "Kasta tärning";
-
-$simox['main'] = <<<EOD
-<h1>Kasta tärning</h1>
-<p>Detta är en exempelsida som visar hur Simox fungerar tillsammans med återanvändbara moduler.</p>
-<p>Hur många kast vill du göra, <a href='?roll=1'>1 kast</a>, <a href='?roll=3'>3 kast</a> eller <a href='?roll=6'>6 kast</a>? </p>
-{$html}
-EOD;
-
-
+$simox['title'] = "Tävling";
+ 
+$simox['main'] = "
+<div id='ContentWrapper'>
+	<div id='content-info'>
+		<h1>Tävling</h1>
+		{$output}
+	</div>
+	<div id='content-aside'>
+	</div>
+</div>
+";
 
 // Finally, leave it all to the rendering phase of Simox.
 include(SIMOX_THEME_PATH);
