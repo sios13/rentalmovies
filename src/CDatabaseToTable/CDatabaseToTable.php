@@ -62,7 +62,7 @@ class CDatabaseToTable {
 						$this->table .= "<td><h2><a href='movies.php?id={$table[$i]->id}'>{$table[$i]->title}</a></h2>";
 						$this->table .= "<p>{$table[$i]->text}</p></td>";
 					} else {
-						$this->table .= "<td style='width:100px;text-align:center;'>{$table[$i]->$columns[$j]}</td>";
+						// $this->table .= "<td style='width:100px;text-align:center;'>{$table[$i]->$columns[$j]}</td>";
 					}
 				} else if ($type == 'users') {
 					if ($columns[$j] == "uppdatera") {
